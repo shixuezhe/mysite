@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+Job-detail
+{% endblock %}
+
+{% block big %}
+<div class="jumbotron">
+  <div class="container">
+    <div class="col-md-8">
+      <div class='job_detail_name'>{{ job.name }}</div>
+      <div class="timesince">
+        {{ (time-job.created_at).days }}天前发布
+      </div>
+      <p>
+        <span class="job-salary">
+            {{ job.wage_low }}K-{{ job.wage_high }}K
+            {{ job.experience }}/{{ job.degree }}
+        </span>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <a class="btn btn-success btn-lg dilivery-btn"  href="{{ url_for('job.resume',job_id=job_id) }}">
+        投递简历
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="col-md-8">
+    <div class="job_detail">
+      <h3>职位标签</h3>
+       {% for tag in job.tags.split(',') %}
+       <li><p font-size='15px'>{{ tag }}</p></li>
+       {% endfor %}
+     <h3>职位描述</h3>
+       <p>{{ job.description }}</p>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="media-left">
+      <a href="{{ job.companies.logo }}">
+        <img width="150" height="150" class="media-object" src="{{ job.companies.logo }}"/>
+      </a>
+    </div>
+    <div class="media-body">
+    </div>
+    <a href="{{ url_for('company.detail',company_id=job.companies.id) }}">{{ job.companies.name }}</a>
+    <p>领域：{{ job.companies.type }}</p>
+    <p>融资：{{ job.companies.finance }}</p>
+    <p>规模：{{ job.companies.staff_num }}</p>
+    <p>城市：{{ job.companies.location }}</p>
+  </div>
+</div>
+{% endblock %}

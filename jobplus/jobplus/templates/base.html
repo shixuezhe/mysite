@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel='stylesheet' href="{{ url_for('static', filename='main.css') }}">
+  </head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('front.index') }}">Jobplus</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li class="{% if active == 'job' %}active{% endif %}"><a href="{{ url_for('job.index') }}">职位<span class="sr-only">(current)</span></a></li>
+          <li class="{% if active == 'company' %}active{% endif %}"><a href="{{ url_for('company.index') }}">公司</a></li>
+        {% if current_user.is_authenticated and current_user.is_company %}
+        <li class="{% if active == 'manage' %}active{% endif %}"><a href="{{ url_for('company.manage',company_id=current_user.id) }}">管理</a></li>
+        {% elif current_user.is_authenticated and current_user.is_admin %}
+        <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.index') }}">控制台</a></li>
+        {% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          {% if not current_user.is_authenticated %}
+          <li><a href="{{ url_for('front.userregister') }}">用户注册</a></li>
+          <li><a href="{{ url_for('front.companyregister') }}">企业注册</a></li>
+          <li><a href="{{ url_for('front.login') }}">登录</a></li>
+          {% else %}
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ url_for('user.home_page',user_id=current_user.id) }}">个人主页</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for('front.logout') }}">退出登录</a></li>
+          </ul>
+          {% endif %}
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+{% block big %}
+<div class="jumbotron">
+   <h2>JOBPLUS</h2>
+   <p>领先的互联网求职.招聘平台</p>
+</div>
+{% endblock %}
+  <div class='container'>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category,message in messages %}
+      <div class='alert alert-{{ category }} alert-dismissible' role='alert'>
+        <button type='button' class='close' data-dismiss='alert' aria-label='close'><span aria-hidden='true'>&times;</span></button>
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block body %}{% endblock %}
+    {% block footer %}
+        <div class="footer">Copyright © 2019 By 爱双双</div>
+    {% endblock %}
+  </div>
+
+  <!-- Bootstrap  jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

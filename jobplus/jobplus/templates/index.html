@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title%}Home{% endblock %}
+
+{% block body %}
+<div class="container">
+      <ul class="nav nav-tabs list-title">
+        <li class="active" role="presentation">
+          <a href="/job/">最新职位</a>
+        </li>
+      </ul>
+      <div class="job-list">
+       {% for job in job_list %}
+       <div class="col-sm-6 col-md-4 job">
+        <div class="job-box">
+          <div class="caption">
+              <a href="{{ url_for('job.detail',job_id=job.id) }}">
+              <h4 class="job-name">{{ job.name }}</h4>
+              <span class="timesince"></span>
+              <p class="required">{{ job.experience }}/{{ job.degree }}</p>
+            </a>
+          </div>
+          <div class="media">
+            <div class="media-left">
+              <a href="#">
+                <img width="50" height="50" class="media-object" alt="公司logo" src="{{ job.companies.logo }}"/>
+              </a>
+            </div>
+            <div class="media-body">
+              <a href="#">
+                <h4 class="media-heading">{{ job.companies.name }}</h4>
+              </a>
+              <span class="company-meta">{{ job.companies.type }}/{{ job.companies.finance }}/{{ job.companies.staff_num }}</span>
+             </div>
+          </div>
+        </div>
+       </div>
+       {% endfor %}
+      </div>
+      <p class="list-more">
+        <a class="btn btn-success btn-lg list-more-btn" href="/job/">更多职位</a>
+      </p>
+
+      <ul class="nav nav-tabs list-title">
+        <li class="active" role="presentation">
+          <a href="/company/">最新公司</a>
+        </li>
+      </ul>
+      <div class="company-list">
+       {% for company in company_list %}
+       <div class="col-sm-6 col-md-4 company-item">
+         <div class="thumbnail">
+           <a href="#">
+             <img width="80" height="80" class="media-object" alt="公司logo" src="{{ company.logo }}"/>
+             <h3 class="company-name">{{ company.name }}</h3>
+             <p class="company-description">{{ company.description }}</p>
+           </a>
+           <a href="#">
+             <p class="company-zhaopin">在招职位( {{ number }} )</p>
+           </a>
+         </div>
+       </div>
+       {% endfor %}
+      </div>
+      <p class="list-more">
+         <a class="btn btn-success btn-lg list-more-btn" href="/company/">更多企业</a>
+      </p>
+</div>
+{% endblock %}

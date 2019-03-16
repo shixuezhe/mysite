@@ -1,0 +1,55 @@
+{% extends "company/manage.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+Company - jobs
+{% endblock %}
+
+{% block operation %}
+<a href="{{ url_for('company.manage_resume',company_id=company_id) }}" type="button" class="btn btn-success btn-admin">
+待处理
+</a>
+<a href="{{ url_for('company.job_create',company_id=company_id) }}" type="button" class="btn btn-success btn-admin">
+等待面试
+</a>
+<a href="{{ url_for('company.job_create',company_id=company_id) }}" type="button" class="btn btn-success btn-admin">
+不合适
+</a>
+{% endblock %}
+
+{% block company %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>职位名称</th>
+      <th>求职者</th>
+      <th>简历</th>
+      <th>投递时间</th>
+      <th>操作</th>
+    </tr>
+    <tbody>
+      {% for delivery in pagination.items %}
+      <tr>
+        <td>{{ job.id }}</td>
+        <td>{{ job.name }}</td>
+        <td>{{ job.companies.name }}</td>
+        <td>{{ job.created_at }}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <a href="{{ url_for('company.job_edit',company_id=company_id) }}" type="button" class="btn btn-default" title＝"编辑">
+              <span class="glyphicon glyphicon-pencil" title＝"编辑" aria-hidden="true"></span>
+            </a>
+            <a href="{{ url_for('company.job_delete',company_id=company_id) }}" type="button" class="btn btn-default" title＝"删除">
+              <span class="glyphicon glyphicon-trash" title＝"删除" aria-hidden="true"></span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </thead>
+</table>
+{{ render_pagination(pagination,'company.manage_job') }}
+{% endblock %}

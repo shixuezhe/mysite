@@ -1,0 +1,50 @@
+{% extends "admin/index.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+Admin - Users
+{% endblock %}
+
+{% block operation %}
+<a href="{{ url_for('admin.create_company') }}" type="button" class="btn btn-primary">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  添加企业用户
+</a>
+{% endblock %}
+
+{% block admin %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>企业名称</th>
+      <th>企业邮箱</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+    <tbody>
+      {% for company in pagination.items %}
+      <tr>
+        <td>{{ company.id }}</td>
+        <td>{{ company.name }}</td>
+        <td>{{ company.email }}</td>
+        <td>{{ company.created_at }}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <a href="{{ url_for('admin.company_edit',company_id=company.id) }}" type="button" class="btn btn-default" title＝"编辑">
+              <span class="glyphicon glyphicon-pencil" title＝"编辑" aria-hidden="true"></span>
+            </a>
+            <a href="{{ url_for('admin.company_delete',company_id=company.id) }}" type="button" class="btn btn-default" title＝"删除">
+              <span class="glyphicon glyphicon-trash" title＝"删除" aria-hidden="true"></span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </thead>
+</table>
+
+{{ render_pagination(pagination, 'admin.company_manage') }}
+{% endblock %}

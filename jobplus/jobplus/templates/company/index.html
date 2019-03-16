@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_pagination %}
+
+{% block title %}
+Company
+{% endblock %}
+{% block body %}
+<ol class="breadcrumb">
+   <li >工作地点：</li>
+  <li ><a href="#">北京</a></li>
+  <li><a href="#">上海</a></li>
+  <li><a href="#">广州</a></li>
+  <li><a href="#">深圳</a></li>
+  <li><a href="#">成都</a></li>
+  <li><a href="#">重庆</a></li>
+  <li><a href="#">郑州</a></li>
+  <li><a href="#">石家庄</a></li>
+  <li><a href="#">青岛</a></li>
+  <li><a href="#">哈尔滨</a></li>
+  <li class="btn-moret" href='#'>更多</li>
+</ol>
+<ol class="breadcrumb">
+   <li >融资阶段：</li>
+  <li ><a href="#">未融资</a></li>
+  <li ><a href="#">天使轮</a></li>
+  <li ><a href="#">A轮</a></li>
+  <li ><a href="#">B轮</a></li>
+  <li ><a href="#">C轮</a></li>
+  <li ><a href="#">D轮及以上</a></li>
+  <li ><a href="#">上市公司</a></li>
+  <li ><a href="#">不需要融资</a></li>
+</ol>
+<ol class="breadcrumb">
+  <li >公司规模：</li>
+  <li ><a href="#">不限</a></li>
+  <li ><a href="#">少于15人</a></li>
+  <li ><a href="#">15-50人</a></li>
+  <li ><a href="#">50-150人</a></li>
+  <li ><a href="#">150-500人</a></li>
+  <li ><a href="#">500-2000人</a></li>
+  <li ><a href="#">2000人以上</a></li>
+</ol>
+<ol class="breadcrumb">
+  <li >行业领域：</li>
+  <li ><a href="#">游戏娱乐</a></li>
+  <li ><a href="#">移动互联网</a></li>
+  <li ><a href="#">电子商务</a></li>
+  <li ><a href="#">金融企业</a></li>
+  <li ><a href="#">服务教育</a></li>
+  <li ><a href="#">文化娱乐</a></li>
+  <li ><a href="#">生产制造</a></li>
+  <li class="btn-moret" href='#'>更多</li>
+</ol>
+<div class="row">
+    {% for company in pagination.items %}
+    <div class="col-sm-6 col-md-3 company-item">
+      <div class="thumbnail">
+          <a href="{{ url_for('company.detail',company_id=company.id) }}">
+            <img width="95" height="95" class="media-object" alt="公司logo" src="{{ company.logo }}"/>
+            <h3 class="company-name">{{ company.name }}</h3>
+            <p class="company-description">{{ company.description }}</p>
+          </a>
+          <a href="#">
+              <p class="company-zhaopin">在招职位({{ number }})</p>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{{ render_pagination(pagination, 'company.index') }}
+{% endblock %}
+
+    
+

@@ -1,0 +1,106 @@
+.btn-delivery {
+    padding: 10px;
+    border: solid 1px #ddd;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 215px;
+}
+
+.form {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.jumbotron {
+    background: SILVER;
+}
+
+.nav-pagination {
+    margin: 0 auto;
+}
+
+.job-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.company-name {
+    text-align: center
+}
+
+.company-description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.company-meta {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+  
+a,
+a:hover,
+a:visited {
+    text-decoration: none !important;
+}
+
+.list-more-btn {
+    padding: 10px 138px;
+    color: #5cb85c;
+    background-color: #fff;
+}
+
+.list-more {
+     margin-bottom: 50px;
+     text-align: center;
+ }
+
+.job-box {
+    padding: 13px;
+    border: solid 2px #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+ }
+
+.list-title {
+    margin: 0 15px;
+}
+ 
+.list-group {
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.list-group-item {
+    width: 50;
+    height: 35;
+}
+
+.job_detail_name {
+    position: relative;
+    display: inline-block;
+    height: 36px;
+    font-size: 36px;
+    color: #333;
+    line-height: 36px;
+}
+
+.job-salary {
+    color: #fd5f39;
+    outline: 0;
+}
+
+.company-logo {
+    width: 181px;
+    height: 181px;
+}
+
+.company-desc {
+    color: #777;
+}
