@@ -104,3 +104,6 @@ a:visited {
 .company-desc {
     color: #777;
 }
+.company-zhaopin {
+    text_align: center;
+}
