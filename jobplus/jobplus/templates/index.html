@@ -49,7 +49,7 @@
        {% for company in company_list %}
        <div class="col-sm-6 col-md-4 company-item">
          <div class="thumbnail">
-           <a href="#">
+             <a href="{{ url_for('company.detail',company_id=company.id) }}">
              <img width="80" height="80" class="media-object" alt="公司logo" src="{{ company.logo }}"/>
              <h3 class="company-name">{{ company.name }}</h3>
              <p class="company-description">{{ company.description }}</p>
