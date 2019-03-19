@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}PhoneRegister{% endblock %}
+{% block body %}
+<div class='form'>
+    <h2><a href="{{ url_for('front.userregister') }}" class="active">用户名注册</a>
+        <a href="{{ url_for('front.phoneregister') }}" class="{{ if active == 'phone' }}active{{ endif }}">手机号注册</a>
+    </h2>
+    <label>{{ form1.phone.label }}{{ form.phone(placeholder="11位数的手机号码") }}</label>
+    <label>{{ form2.code.label }}{{ form.code(placeholder="4位数验证码") }}
+           {{ form2.submit(class='btn btn-primary', type='submit') }}
+    </label>
+    {{ form1.submit(class='btn btn-primary', type='submit') }}
+</div>
+{% endblock %}

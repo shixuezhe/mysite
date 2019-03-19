@@ -3,6 +3,7 @@ from wtforms import StringField,PasswordField,SubmitField,BooleanField,TextField
 from wtforms.validators import Required,Length,EqualTo,URL,Email
 from jobplus.models import db,User,Company,Job,Delivery,Resume
 
+
 class User_RegisterForm(FlaskForm):
     username = StringField('用户名',validators=[Required(),Length(3,24)])
     email = StringField('邮箱',validators=[Required(),Email()])
@@ -24,6 +25,19 @@ class User_RegisterForm(FlaskForm):
         db.session.commit()
         return user
 
+class Phone_RegisterForm(FlaskForm):
+    phone = StringField('手机号',validators=[Required(),Length(11)])
+    submit = SubmitField('提交')
+
+    def validate_phone(self,field):
+        a = field.data
+        if a[：1] not in range(13,20) or len(a) != 11:
+            raise ValidationError('请输入正确的手机号码')
+
+class CodeForm(FlaskForm):
+    code = StringField('验证码', validators=[Required(), Length(4)])
+    submit = SubmitField('提交')
+
 class Company_RegisterForm(FlaskForm):
     username = StringField('企业名称',validators=[Required(),Length(3,24)])
     email = StringField('邮箱',validators=[Required(),Email()])
@@ -31,7 +45,7 @@ class Company_RegisterForm(FlaskForm):
     repeat_password = PasswordField('重复密码',validators=[Required(),EqualTo('password')])
     submit = SubmitField('提交')
 
-    def validate_name(self,field):
+    def validate_username(self,field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('企业已存在')
     def validate_email(self,field):
@@ -79,7 +93,7 @@ class UserProfileForm(FlaskForm):
     experience = StringField('工作年限')
     submit = SubmitField('提交')
     
-    def validate_phone(self,field):
+    def validate_phone_number(self,field):
         if field.data[0] is not 1 and len(field.data) != 11:
             raise ValidationError('请输入正确11位手机号码')
 
@@ -97,7 +111,7 @@ class UserProfileForm(FlaskForm):
 class CompanyProfileForm(FlaskForm):
     name = StringField('企业名称',validators=[Required(),Length(3,24)])
     email = StringField('邮箱',validators=[Required(),Email()])
-    number = StringField('手机号',validators=[Required(),Length(11)])
+    phone = StringField('手机号',validators=[Required(),Length(11)])
     password = PasswordField('密码',validators=[Required(),Length(6,24)])
     slug = StringField('Slug',validators=[Length(3,24)])
     address = StringField('公司地址',validators=[Required(),Length(2,36)])
@@ -108,7 +122,7 @@ class CompanyProfileForm(FlaskForm):
     submit = SubmitField('提交')
 
     def validate_phone(self,field):
-        if field.data[0] is not 1 and len(field.data) != 11:
+        if field.data[0]  not 1 and len(field.data) != 11:
             raise ValidationError('please input correct phone number')
 
     def update_company(self,user):
