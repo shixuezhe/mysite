@@ -32,7 +32,7 @@ def phoneregister():
     form1 = Phone_RegisterForm()
     form2 = CodeForm()
     if form1.validate_on_submit():
-        send_code(form1.phone.data)
+        code = send_code(form1.phone.data)
         flash('验证码发送成功，请及时查收','success')
         if form2.validate_on_submit():
             if form2.code.data == code:

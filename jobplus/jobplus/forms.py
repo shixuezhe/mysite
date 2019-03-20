@@ -39,8 +39,8 @@ class Phone_RegisterForm(FlaskForm):
     def create_user(self):
         user = User(username=fake.name(),
                     email=fake.email(),
-                    password=self.phone.data
-                    phone=self.phone.data)
+                    password=self.phone.data,
+                    phone_number=self.phone.data)
         db.session.add(user)
         db.session.commit()
 
