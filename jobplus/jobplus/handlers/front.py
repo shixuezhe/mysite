@@ -25,16 +25,16 @@ def userregister():
         form.create_user()
         flash('注册成功，请登录','success')
         return redirect(url_for('front.login'))
-    return render_template('user_register.html',form=form)
+    return render_template('user_register.html',form=form,active='email')
 
 @front.route('/phoneregister',methods=['GET','POST'])
 def phoneregister():
     form1 = Phone_RegisterForm()
     form2 = CodeForm()
-    if form2.validate_on_submit():
-        send_code(form1.data)
-        if form1.validate_on_submit():
-            if form2.data == send_code(form1.data):
+    if form1.validate_on_submit():
+        send_code(form1.phone.data)
+        if form2.validate_on_submit():
+            if form2.code.data == code:
                 flash('注册成功，请登录','success')
                 return redirect(url_for('front.login'))
             else:

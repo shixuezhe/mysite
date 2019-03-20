@@ -26,17 +26,18 @@ class User_RegisterForm(FlaskForm):
         return user
 
 class Phone_RegisterForm(FlaskForm):
-    phone = StringField('手机号',validators=[Required(),Length(11)])
+    phone = StringField('手机号',validators=[Required()])
     submit = SubmitField('提交')
 
     def validate_phone(self,field):
         a = field.data
-        if a[:1] not in range(13,20) or len(a) != 11:
+        if a[:2] not in range(13,20) and len(a) != 11:
             raise ValidationError('请输入正确的手机号码')
 
 class CodeForm(FlaskForm):
     code = StringField('验证码', validators=[Required(), Length(4)])
     submit = SubmitField('提交')
+
 
 class Company_RegisterForm(FlaskForm):
     username = StringField('企业名称',validators=[Required(),Length(3,24)])

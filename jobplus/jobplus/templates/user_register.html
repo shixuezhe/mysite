@@ -5,10 +5,10 @@
 {% block body %}
 <div class='form'>
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active">
-        <a href="{{ url_for('front.userregister'}}">邮箱注册</a>
+        <li role="presentation" class="{% if active == 'email' %}active{% endif %}">
+        <a href="{{ url_for('front.userregister') }}">邮箱注册</a>
       </li>
-      <li role="presentation" class="{% if active == 'online_job' %}active{% endif %}">
+      <li role="presentation" class="{% if active == 'phone' %}active{% endif %}">
         <a href="{{ url_for('front.phoneregister') }}">手机注册</a>
       </li>
     </ul>
