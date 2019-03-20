@@ -7,21 +7,28 @@
     width: 215px;
 }
 
+.form-phone {
+    width: 250px;
+    margin: 0 auto;
+}
+
 .form {
     width: 400px;
     margin: 0 auto;
 }
 
 .jumbotron {
-    background: url("http://pic.netbian.com/uploads/allimg/180702/095156-1530496316b850.jpg");
-  background-position: center 0; 
-  background-repeat: no-repeat;  
-  background-attachment: fixed; 
-  background-size: cover; 
-  -webkit-background-size: cover;  
-  -o-background-size: cover;  
-  -moz-background-size: cover;  
-  -ms-background-size: cover;
+    background: linear-gradient(45deg,#020031 0,#6d3353 100%);
+    background-image: linear-gradient(45deg, rgb(2, 0, 49) 0px, rgb(109, 51, 83) 100%);
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
 }
 
 .nav-pagination {
@@ -54,6 +61,7 @@ a,
 a:hover,
 a:visited {
     text-decoration: none !important;
+    color: #5b65e0;
 }
 
 .list-more-btn {
@@ -116,5 +124,5 @@ a:visited {
     text_align: center;
 }
 .site_name {
-    color: red;
+    color: #ffffff;
 }

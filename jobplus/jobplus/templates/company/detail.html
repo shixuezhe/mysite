@@ -12,7 +12,7 @@ Company-detail
         <img width='180' height='180' class="media-object" alt="logo"  src="{{ company.logo }}"/>
       </div>
   </div>  
-    <div class="col-md-9">
+    <div class="col-md-9" style="color:#ffffff">
       <h2>{{ company.name }}</h2>
       <p>{{ company.description }}</p>
       <p class='company-desc'>{{ company.type}}/{{ company.finance }}/{{company.staff_num }}</p>
@@ -26,7 +26,7 @@ Company-detail
 <div class="container">
   <div class="col-md-8">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active">
+      <li role="presentation" class="active" >
         <a href="{{ url_for('company.detail',company_id=company.id) }}">公司介绍</a>
       </li>
       <li role="presentation" class="{% if active == 'online_job' %}active{% endif %}">

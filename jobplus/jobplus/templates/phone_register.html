@@ -2,7 +2,7 @@
 
 {% block title %}PhoneRegister{% endblock %}
 {% block body %}
-<div class='form' method='POST' action="{{ url_for('front.phoneregister') }}">
+<div class='form-phone' method='POST' action="{{ url_for('front.phoneregister') }}">
     <ul class="nav nav-tabs">
         <li role="presentation" class="{% if active == 'email' %}active{% endif %}">
         <a href="{{ url_for('front.userregister') }}">邮箱注册</a>
