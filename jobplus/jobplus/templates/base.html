@@ -17,10 +17,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ url_for('front.index') }}">Jobplus</a>
+      <a class="navbar-brand" href="{{ url_for('front.index') }}">??</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
           <li class="{% if active == 'job' %}active{% endif %}"><a href="{{ url_for('job.index') }}">职位<span class="sr-only">(current)</span></a></li>
@@ -52,7 +51,7 @@
 </nav>
 {% block big %}
 <div class="jumbotron">
-   <h2>嘟嘟招聘</h2>
+    <h2><a class='site_name'>嘟嘟招聘</a></h2>
    <p>互联网人的求职、招聘平台</p>
 </div>
 {% endblock %}

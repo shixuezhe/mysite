@@ -1,5 +1,5 @@
 import random
-import zhenzismsclient as smsclient
+import jobplus.zhenzismsclient as smsclient
 
 def send_code(number):
     code = ''

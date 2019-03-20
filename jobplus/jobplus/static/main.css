@@ -20,6 +20,10 @@
     margin: 0 auto;
 }
 
+.site_name {
+    color: red;
+}
+
 .job-name {
     text-overflow: ellipsis;
     overflow: hidden;

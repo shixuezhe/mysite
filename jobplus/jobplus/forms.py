@@ -31,7 +31,7 @@ class Phone_RegisterForm(FlaskForm):
 
     def validate_phone(self,field):
         a = field.data
-        if a[：1] not in range(13,20) or len(a) != 11:
+        if a[:1] not in range(13,20) or len(a) != 11:
             raise ValidationError('请输入正确的手机号码')
 
 class CodeForm(FlaskForm):
@@ -122,7 +122,7 @@ class CompanyProfileForm(FlaskForm):
     submit = SubmitField('提交')
 
     def validate_phone(self,field):
-        if field.data[0]  not 1 and len(field.data) != 11:
+        if field.data[0]  != 1 or len(field.data) != 11:
             raise ValidationError('please input correct phone number')
 
     def update_company(self,user):
