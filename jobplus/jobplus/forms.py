@@ -2,7 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,TextField,ValidationError
 from wtforms.validators import Required,Length,EqualTo,URL,Email
 from jobplus.models import db,User,Company,Job,Delivery,Resume
+from faker import Faker
 
+fake = Faker()
 
 class User_RegisterForm(FlaskForm):
     username = StringField('用户名',validators=[Required(),Length(3,24)])
@@ -33,6 +35,14 @@ class Phone_RegisterForm(FlaskForm):
         a = field.data
         if a[:2] not in range(13,20) and len(a) != 11:
             raise ValidationError('请输入正确的手机号码')
+
+    def create_user(self):
+        user = User(username=fake.name(),
+                    email=fake.email(),
+                    password=self.phone.data
+                    phone=self.phone.data)
+        db.session.add(user)
+        db.session.commit()
 
 class CodeForm(FlaskForm):
     code = StringField('验证码', validators=[Required(), Length(4)])

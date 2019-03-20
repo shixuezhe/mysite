@@ -33,8 +33,10 @@ def phoneregister():
     form2 = CodeForm()
     if form1.validate_on_submit():
         send_code(form1.phone.data)
+        flash('验证码发送成功，请及时查收','success')
         if form2.validate_on_submit():
             if form2.code.data == code:
+                form1.create_user()
                 flash('注册成功，请登录','success')
                 return redirect(url_for('front.login'))
             else:

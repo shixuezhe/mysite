@@ -13,7 +13,15 @@
 }
 
 .jumbotron {
-    background: SILVER;
+    background: url("http://pic.netbian.com/uploads/allimg/180702/095156-1530496316b850.jpg");
+  background-position: center 0; 
+  background-repeat: no-repeat;  
+  background-attachment: fixed; 
+  background-size: cover; 
+  -webkit-background-size: cover;  
+  -o-background-size: cover;  
+  -moz-background-size: cover;  
+  -ms-background-size: cover;
 }
 
 .nav-pagination {
