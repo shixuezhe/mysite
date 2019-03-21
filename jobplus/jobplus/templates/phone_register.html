@@ -15,13 +15,13 @@
     {{ form1.csrf_token }}
     {{ form2.csrf_token }}
     <div class='form-group'>
-      {{ form1.phone.label }} {{ form1.phone(class='form-control') }}
+      {{ form1.phone.label }} {{ form1.phone(class='form-control') }
+      <div class='form-group'>
+        <p>{{ form2.code.label }} {{ form2.code(class='form-control') }}</p>
+        <p>{{ form1.submit(class='btn btn-primary',type='submit',value='获取验证码') }}</p>
+      </div>
+      {{ form2.submit(class='btn btn-primary',type='submit') }}
     </div>
-    <div class='form-group'>
-        <a>{{ form2.code.label }} {{ form2.code(class='form-control') }}</a>
-        <a>{{ form1.submit(class='btn btn-primary',type='submit',value='获取验证码') }}</a>
-    </div>
-    {{ form2.submit(class='btn btn-primary',type='submit') }}
     </form>
 </div>
 {% endblock %}

@@ -4,9 +4,7 @@ from jobplus.models import User,Company,Job
 from jobplus.forms import User_RegisterForm,Company_RegisterForm,LoginForm,Phone_RegisterForm,CodeForm
 from flask_login import login_user,logout_user,login_required
 from jobplus.send_code import send_code
-from faker import Faker
 
-fake = Faker()
 front=Blueprint('front',__name__)
 
 @front.route('/')
@@ -32,8 +30,9 @@ def phoneregister():
     form1 = Phone_RegisterForm()
     form2 = CodeForm()
     if form1.validate_on_submit():
-        code = send_code(form1.phone.data)
-        flash('验证码发送成功，请及时查收','success')
+        number = send_code(form1.phone.data)
+        code = int(number)
+        flash('验证码发送成功，请及时查收'+number,'success')
         if form2.validate_on_submit():
             if form2.code.data == code:
                 form1.create_user()
