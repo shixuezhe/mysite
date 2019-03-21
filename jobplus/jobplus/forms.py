@@ -29,7 +29,8 @@ class User_RegisterForm(FlaskForm):
 
 class Phone_RegisterForm(FlaskForm):
     phone = StringField('手机号',validators=[Required()])
-    submit = SubmitField('提交')
+    code = StringField('验证码', validators=[Required()])
+    submit = SubmitField('提交/获取验证码')
 
     def validate_phone(self,field):
         a = field.data

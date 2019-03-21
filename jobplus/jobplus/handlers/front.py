@@ -1,7 +1,7 @@
 from flask import Blueprint,url_for,render_template,flash,redirect
 from flask import current_app,request
 from jobplus.models import User,Company,Job
-from jobplus.forms import User_RegisterForm,Company_RegisterForm,LoginForm,Phone_RegisterForm,CodeForm
+from jobplus.forms import User_RegisterForm,Company_RegisterForm,LoginForm,Phone_RegisterForm
 from flask_login import login_user,logout_user,login_required
 from jobplus.send_code import send_code
 
@@ -26,21 +26,25 @@ def userregister():
     return render_template('user_register.html',form=form,active='email')
 
 @front.route('/phoneregister',methods=['GET','POST'])
-def phoneregister():
-    form1 = Phone_RegisterForm()
-    form2 = CodeForm()
-    if form1.validate_on_submit():
-        number = send_code(form1.phone.data)
-        code = int(number)
-        flash('验证码发送成功，请及时查收'+number,'success')
-        if form2.validate_on_submit():
-            if form2.code.data == code:
-                form1.create_user()
-                flash('注册成功，请登录','success')
-                return redirect(url_for('front.login'))
+def phoneregister(request):
+    form = Phone_RegisterForm()
+    if request.POST:
+        if "code" in request.POST:
+            number = send_code(form.phone.data)
+            code = int(number)
+            flash('验证码发送成功，请及时查收' + number, 'success')
+            return code
+        if form.validate_on_submit():
+            if form.code.data:
+                if form.code.data == code:
+                    form.create_user()
+                    flash('注册成功，请登录','success')
+                    return redirect(url_for('front.login'))
+                else:
+                    flash('验证码错误','success')
             else:
-                flash('验证码错误','success')
-    return render_template('phone_register.html',form1=form1,form2=form2,active='phone')
+                flash('请输入验证码')
+    return render_template('phone_register.html',form=form,active='phone')
 
 @front.route('/companyregister',methods=['GET','POST'])
 def companyregister():
