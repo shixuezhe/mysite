@@ -1,23 +1,12 @@
 from flask import Blueprint,url_for,render_template,flash,redirect
 from flask import current_app,request
 from jobplus.models import User,Company,Job
-from jobplus.forms import User_RegisterForm,Company_RegisterForm,LoginForm,Phone_RegisterForm
+from jobplus.forms import User_RegisterForm,Company_RegisterForm,LoginForm,Phone_RegisterForm,CodeForm
 from flask_login import login_user,logout_user,login_required
 import random
-import jobplus.zhenzismsclient as smsclient
+from jobplus.send_code import send_code
 
 front=Blueprint('front',__name__)
-'''
-发送验证码函数
-'''
-def send_code(number):
-    code = ''
-    for i in range(1, 5):
-        code = code + str(random.randint(1, 9))
-    client = smsclient.ZhenziSmsClient('https://sms_developer.zhenzikj.com','101043', 'MGVjY2FhMzEtZDE3NC00MDA3LWE1NDItNWQwMWQwNmEyYTE4')
-    result = client.send(number, '您的验证码为' + code + ',请不要将验证码泄露给他人哦！！！')
-    return code
-
 
 @front.route('/')
 def index():
@@ -39,15 +28,22 @@ def userregister():
 
 @front.route('/phoneregister',methods=['GET','POST'])
 def phoneregister():
-    form = Phone_RegisterForm()
-    if form.validate_on_submit():
-        if form.code.data:
+    form1 = Phone_RegisterForm()
+    form2 = CodeForm()
+    if form2.validate_on_submit():
+        if form1.phone.data:
+            send_code(form1.phone.data)
+            flash('发送验证码成功，请注意查收','success')
+        else:
+            flash('验请输入手机号', 'success')
+    if form1.validate_on_submit():
+        if form1.code.data:
             form.create_user()
             flash('注册成功，请登录','success')
             return redirect(url_for('front.login'))
         else:
             flash('验请输入证码','success')
-    return render_template('phone_register.html',form=form,active='phone',send_code=send_code)
+    return render_template('phone_register.html',form1=form1,form2=form2,active='phone')
 
 @front.route('/companyregister',methods=['GET','POST'])
 def companyregister():

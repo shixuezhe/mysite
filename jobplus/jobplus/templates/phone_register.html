@@ -11,8 +11,8 @@
         <a href="{{ url_for('front.phoneregister') }}">手机注册</a>
       </li>
     </ul>
-    <div>{{ render_form(form,url_for('front.phoneregister')  }}
-        <button type="submit" class="btn btn-info" name="code" onclick="{{ send_code(form.phone.data) }}">获取验证码</button>
+    <div>{{ render_form(form1,url_for('front.phoneregister')  }}
+         {{ render_form(form2,url_for('front.phoneregister')  }}
     </div>
 </div>
 {% endblock %}
