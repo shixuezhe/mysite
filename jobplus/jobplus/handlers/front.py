@@ -30,19 +30,18 @@ def userregister():
 def phoneregister():
     form1 = Phone_RegisterForm()
     form2 = CodeForm()
+    if form1.validate_on_submit():
+        number = form1.send_code(form1.phone.data)
+        code = int(number)
+        flash('发送验证码成功，请注意查收','success')
+        return code
     if form2.validate_on_submit():
-        if form1.phone.data:
-            send_code(form1.phone.data)
-            flash('发送验证码成功，请注意查收','success')
-        else:
-            flash('验请输入手机号', 'success')
-    if form1.validate():
-        if form1.code.data:
-            form.create_user()
+        if form2.code.data == code:
+            form1.create_user()
             flash('注册成功，请登录','success')
             return redirect(url_for('front.login'))
         else:
-            flash('验请输入证码','success')
+            flash('请输入正确验证码','error')
     return render_template('phone_register.html',form1=form1,form2=form2,active='phone')
 
 @front.route('/companyregister',methods=['GET','POST'])

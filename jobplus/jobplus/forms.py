@@ -3,6 +3,8 @@ from wtforms import StringField,PasswordField,SubmitField,BooleanField,TextField
 from wtforms.validators import Required,Length,EqualTo,URL,Email
 from jobplus.models import db,User,Company,Job,Delivery,Resume
 from faker import Faker
+import random
+import jobplus.zhenzismsclient as smsclient
 
 fake = Faker()
 
@@ -29,8 +31,7 @@ class User_RegisterForm(FlaskForm):
 
 class Phone_RegisterForm(FlaskForm):
     phone = StringField('手机号',validators=[Required()])
-    code = StringField('验证码', validators=[Required()])
-
+    submit = SubmitField('获取验证码')
     def validate_phone(self,field):
         a = field.data
         if a[:2] not in range(13,20) and len(a) != 11:
@@ -44,7 +45,17 @@ class Phone_RegisterForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
 
+    def send_code(self,number):
+        code = ''
+        for i in range(1, 5):
+            code = code + str(random.randint(1, 9))
+        client = smsclient.ZhenziSmsClient('https://sms_developer.zhenzikj.com', '101043','MGVjY2FhMzEtZDE3NC00MDA3LWE1NDItNWQwMWQwNmEyYTE4')
+        result = client.send(number, '您的验证码为' + code + ',请不要将验证码泄露给他人哦！！！')
+        return code
+
+
 class CodeForm(FlaskForm):
+    code = StringField('验证码', validators=[Required()])
     submit = SubmitField('提交')
 
 
