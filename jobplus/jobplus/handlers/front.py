@@ -36,7 +36,7 @@ def phoneregister():
             flash('发送验证码成功，请注意查收','success')
         else:
             flash('验请输入手机号', 'success')
-    if form1.validate_on_submit():
+    if form1.validate():
         if form1.code.data:
             form.create_user()
             flash('注册成功，请登录','success')

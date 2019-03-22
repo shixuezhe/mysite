@@ -30,7 +30,6 @@ class User_RegisterForm(FlaskForm):
 class Phone_RegisterForm(FlaskForm):
     phone = StringField('手机号',validators=[Required()])
     code = StringField('验证码', validators=[Required()])
-    submit = SubmitField('提交')
 
     def validate_phone(self,field):
         a = field.data
@@ -45,7 +44,7 @@ class Phone_RegisterForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
 
-class CodeForm(Phone_RegisterForm):
+class CodeForm(FlaskForm):
     submit = SubmitField('提交')
 
 
