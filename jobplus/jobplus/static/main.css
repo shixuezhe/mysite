@@ -61,7 +61,7 @@ a,
 a:hover,
 a:visited {
     text-decoration: none !important;
-    color: #5b65e0;
+    color: darkgrey;
 }
 
 .list-more-btn {
@@ -94,8 +94,9 @@ a:visited {
 }
 
 .list-group-item {
-    width: 50;
+    width: 40;
     height: 35;
+    font-size: 20px;
 }
 
 .job_detail_name {

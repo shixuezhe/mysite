@@ -25,15 +25,14 @@
           <li class="{% if active == 'job' %}active{% endif %}"><a href="{{ url_for('job.index') }}">职位<span class="sr-only">(current)</span></a></li>
           <li class="{% if active == 'company' %}active{% endif %}"><a href="{{ url_for('company.index') }}">公司</a></li>
         {% if current_user.is_authenticated and current_user.is_company %}
-        <li class="{% if active == 'manage' %}active{% endif %}"><a href="{{ url_for('company.manage',company_id=current_user.id) }}">管理</a></li>
+        <li class="{% if active == 'manage' %}active{% endif %}"><a href="{{ url_for('company.manage_job',company_id=current_user.id) }}">管理</a></li>
         {% elif current_user.is_authenticated and current_user.is_admin %}
-        <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.index') }}">控制台</a></li>
+        <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.user_manage') }}">控制台</a></li>
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
           {% if not current_user.is_authenticated %}
-          <li><a href="{{ url_for('front.userregister') }}">用户注册</a></li>
-          <li><a href="{{ url_for('front.companyregister') }}">企业注册</a></li>
+          <li><a href="{{ url_for('front.phone_register') }}">注册</a></li>
           <li><a href="{{ url_for('front.login') }}">登录</a></li>
           {% else %}
           <li class="dropdown">
@@ -69,7 +68,12 @@
 
     {% block body %}{% endblock %}
     {% block footer %}
-        <div class="footer">Copyright © 2019 By 爱双双</div>
+    <footer class="footer navbar-fixed-bottom ">
+      <div class="container">
+        Copyright © 2019 By 小双双
+      </div>
+    </footer>
+
     {% endblock %}
   </div>
 

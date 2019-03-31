@@ -1,10 +1,17 @@
-from flask import url_for
+from flask import url_for,Flask
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
 
-db = SQLAlchemy()
+app = Flask(__name__)
+app.config.update(dict(
+    SCRECT_KEY='',
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost/liyang?charset=utf8',
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+))
+
+db = SQLAlchemy(app)
 
 class Base(db.Model):
     __abstract__ = True
@@ -20,7 +27,7 @@ class User(Base,UserMixin):
     username = db.Column(db.String(32),unique=True,index=True,nullable=False)
     email = db.Column(db.String(64),unique=True,index=True,nullable=False)
     _password = db.Column('password',db.String(256),nullable=False)
-    phone_number = db.Column(db.Integer)
+    phone_number = db.Column(db.String(64))
     resume = db.Column(db.String(128))
     experience = db.Column(db.String(24))
     role = db.Column(db.SmallInteger,default=ROLE_USER)
@@ -81,8 +88,8 @@ class Company(Base):
 class Job(Base):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(64),nullable=False)
-    wage_low = db.Column(db.Integer,nullable=False)
-    wage_high = db.Column(db.Integer,nullable=False)
+    wage_low = db.Column(db.String(24),nullable=False)
+    wage_high = db.Column(db.String(24),nullable=False)
     location = db.Column(db.String(32),nullable=False)
     tags = db.Column(db.String(64))
     experience = db.Column(db.String(64))
@@ -127,3 +134,5 @@ class Delivery(Base):
     company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger,default=STATUS_WAITING)
 
+if __name__ == '__main__':
+    db.create_all()

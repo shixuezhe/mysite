@@ -8,34 +8,18 @@ import jobplus.zhenzismsclient as smsclient
 
 fake = Faker()
 
-class User_RegisterForm(FlaskForm):
-    username = StringField('用户名',validators=[Required(),Length(3,24)])
-    email = StringField('邮箱',validators=[Required(),Email()])
-    password = PasswordField('密码',validators=[Required(),Length(6,24)])
-    repeat_password = PasswordField('重复密码',validators=[Required(),EqualTo('password')])
-    submit = SubmitField('提交')
-
-    def validate_username(self,field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('用户名已存在')
-    def validate_email(self,field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError('邮箱已存在')
-
-    def create_user(self):
-        user = User()
-        self.populate_obj(user)
-        db.session.add(user)
-        db.session.commit()
-        return user
-
 class Phone_RegisterForm(FlaskForm):
     phone = StringField('手机号',validators=[Required()])
-    submit = SubmitField('获取验证码')
+    code = StringField('验证码')
+    submit = SubmitField('获取验证码/提交')
     def validate_phone(self,field):
         a = field.data
+        user = User.query.filter_by(phone_number=a).first()
         if a[:2] not in range(13,20) and len(a) != 11:
             raise ValidationError('请输入正确的手机号码')
+        if user:
+            raise ValidationError('该手机已注册')
+
 
     def create_user(self):
         user = User(username=fake.name(),
@@ -53,49 +37,18 @@ class Phone_RegisterForm(FlaskForm):
         result = client.send(number, '您的验证码为' + code + ',请不要将验证码泄露给他人哦！！！')
         return code
 
-
-class CodeForm(FlaskForm):
-    code = StringField('验证码', validators=[Required()])
-    submit = SubmitField('提交')
-
-
-class Company_RegisterForm(FlaskForm):
-    username = StringField('企业名称',validators=[Required(),Length(3,24)])
-    email = StringField('邮箱',validators=[Required(),Email()])
-    password = PasswordField('密码',validators=[Required(),Length(6,24)])
-    repeat_password = PasswordField('重复密码',validators=[Required(),EqualTo('password')])
-    submit = SubmitField('提交')
-
-    def validate_username(self,field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('企业已存在')
-    def validate_email(self,field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError('邮箱已存在')
-
-    def create_company(self):
-        user = User(
-                username=self.username.data,
-                email=self.email.data,
-                password=self.password.data,
-                role=20
-                )
-        db.session.add(user)
-        db.session.commit()
-        return user
-
 class LoginForm(FlaskForm):
-    email = StringField('邮箱',validators=[Required(),Email()])
-    password = PasswordField('密码',validators=[Required(),Length(6,24)])
+    phone = StringField('手机号',validators=[Required()])
+    password = PasswordField('密码(初始密码为手机号)',validators=[Required(),Length(6,24)])
     remember_me = BooleanField('记住我')
     submit = SubmitField('提交')
 
-    def validate_email(self,field):
-        if field.data and not User.query.filter_by(email=field.data).first():
-            raise ValidationError('邮箱未注册')
+    def validate_phone(self,field):
+        if field.data and not User.query.filter_by(phone_number=field.data).first():
+            raise ValidationError('手机号未注册')
 
     def validate_password(self,field):
-        user = User.query.filter_by(email=self.email.data).first()
+        user = User.query.filter_by(phone_number=self.phone.data).first()
         if user and not user.check_password(field.data):
             raise ValidationError('密码错误')
 
@@ -110,12 +63,12 @@ class UserProfileForm(FlaskForm):
     email = StringField('邮箱',validators=[Required(),Email()])
     password = PasswordField('密码',validators=[Required(),Length(6,24)])
     phone_number = StringField('手机号',validators=[Required(),Length(11)])
-    resume = StringField('简历链接',validators=[Required(),URL()])
+    resume = StringField('简历链接',validators=[URL()])
     experience = StringField('工作年限')
     submit = SubmitField('提交')
     
     def validate_phone_number(self,field):
-        if field.data[0] is not 1 and len(field.data) != 11:
+        if field.data[:2]  not in range(13,20) and len(field.data) != 11:
             raise ValidationError('请输入正确11位手机号码')
 
     def update_user(self,user):
@@ -143,12 +96,13 @@ class CompanyProfileForm(FlaskForm):
     submit = SubmitField('提交')
 
     def validate_phone(self,field):
-        if field.data[0]  != 1 or len(field.data) != 11:
-            raise ValidationError('please input correct phone number')
+        if field.data[0]  != 1 and len(field.data) != 11:
+            raise ValidationError('请输入正确手机号码')
 
     def update_company(self,user):
         user.username = self.name.data
         user.email = self.email.data
+        user.role = 20
         if self.password.data:
             user.password = self.password.data
         if user.companies:
@@ -156,6 +110,7 @@ class CompanyProfileForm(FlaskForm):
         else:
             companies = Company()
             companies.users_id = user.id
+            companies.number = self.phone.data
         self.populate_obj(companies)
         db.session.add(user)
         db.session.add(companies)

@@ -9,8 +9,8 @@ Admin
   <div class='col-md-3'>
     <h3>管理</h3>
     <div class='list-group'>
-        <li><a class='list-group-item' href='{{ url_for('admin.company_manage') }}'>企业管理</a></li>
-        <li><a class='list-group-item' href='{{ url_for('admin.user_manage') }}'>用户管理</a></li>
+        <a class='list-group-item {% if active == 'company' %}active{% endif %}' href='{{ url_for('admin.company_manage') }}'>企业管理</a>
+        <a class='list-group-item {% if active == 'user' %}active{% endif %}' href='{{ url_for('admin.user_manage') }}'>用户管理</a>
     </div>
     {% block operation %}{% endblock %}
   </div>

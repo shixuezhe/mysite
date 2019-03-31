@@ -33,12 +33,6 @@ def online_job(company_id):
     number = len(job)
     return render_template('company/online_job.html',active='online_job',job=job,company=company,number=number)
 
-@company.route('/<int:company_id>/manage')
-@company_required
-def manage(company_id):
-    company = Company.query.filter_by(users_id=company_id).first()
-    return render_template('company/manage.html',company_id=company_id,active='manage')
-
 @company.route('/<int:company_id>/manage/job')
 @company_required
 def manage_job(company_id):

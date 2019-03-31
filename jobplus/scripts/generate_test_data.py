@@ -1,5 +1,4 @@
 import os,json,random
-from random import randint
 from faker import Faker
 from jobplus.models import db,User,Company,Job
 
@@ -70,3 +69,6 @@ def run():
     except Exception as e:
         print(e)
         db.session.rollback()
+
+if __name__ == '__main__':
+    run()

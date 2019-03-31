@@ -2,17 +2,9 @@
 {% from "macros.html" import render_form %}
 {% block title %}PhoneRegister{% endblock %}
 {% block body %}
-<div class='form-phone' method='POST' action="{{ url_for('front.phoneregister') }}">
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="{% if active == 'email' %}active{% endif %}">
-        <a href="{{ url_for('front.userregister') }}">邮箱注册</a>
-      </li>
-      <li role="presentation" class="{% if active == 'phone' %}active{% endif %}">
-        <a href="{{ url_for('front.phoneregister') }}">手机注册</a>
-      </li>
+<div class='form-phone' method='POST' action="{{ url_for('front.phone_register') }}">
     </ul>
-    <div>{{ render_form(form1,url_for('front.phoneregister')) }}
-         {{ render_form(form2,url_for('front.phoneregister')) }}
+    <div>{{ render_form(form,url_for('front.phone_register')) }}
     </div>
 </div>
 {% endblock %}
