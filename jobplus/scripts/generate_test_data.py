@@ -2,7 +2,7 @@ import os
 import json
 import random
 from faker import Faker
-from jobplus.jobplus.models import *
+from jobplus.models import *
 
 fake = Faker('zh_CN')
 data_company = []

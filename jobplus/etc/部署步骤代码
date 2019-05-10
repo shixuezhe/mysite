@@ -5,18 +5,18 @@ apt-get install git python3-pip
 apt-get install virtualenv
 apt-get install mysql-server mysql-client
 apt-get install libmysqlclient-dev
-mysql -uroot
+mysql -u root -p
 vim /etc/mysql/mysql.conf.d/mysqld.cnf
 character_set_server=utf8
 service mysql restart
-mysql -uroot
+mysql -u root -p
 show variables like '%char%'
-create database jobplus;
+create database liyang;
 exit
 
 mkdir /srv/www
 cd /srv/www
-git clone https://github.com/louplus/jobplusX-Y
+git clone https://github.com/shixuezhe/mysite
 配置文件 ~/.pip/pip.conf
 
 [global]
@@ -27,24 +27,28 @@ trusted-host=pypi.douban.com
 export LC_ALL="en_US.UTF-8"
 virtualenv -p python3 venv
 source ./venv/bin/activate
+
 pip3 install -r requirements.txt
 cat requirements.txt
 pip3 freeze
 
 export FLASK_APP=manage.py
 flask shell
-from jobplus.app import db
+from jobplus.models import db
 db.create_all()
+form scripts.generate_test_data import run
+run
 
 flask run
+可以用curl http://127.0.0.1:5000访问图形界面
 
 pip3 install gunicorn
 gunicorn -h
 
 命令方式 - 开发阶段使用
 
-gunicorn -b '0.0.0.0:8080' -w 3 manage:app
-绑定到 8080 端口 指定 worker 数量
+gunicorn -b '127.0.0.1：:5000' -w 3 manage:app
+绑定到 5000 端口 指定 worker 数量
 CPU 核2倍+1
 
 gunicorn -c ./etc/gunicorn.py manage:app
@@ -81,7 +85,7 @@ cd /etc/nginx/sites-available
 
 default
 
-proxy_pass http://127.0.0.1:8000;
+proxy_pass http://127.0.0.1:5000;
 
 
 location /static {

@@ -23,3 +23,6 @@ text-unidecode==1.1
 urllib3==1.22
 Werkzeug==0.12.2
 WTForms==2.1
+matplotlib==3.0.3
+pandas==0.24.2
+pymysql==0.9.3
