@@ -58,10 +58,11 @@ Company
           <a href="{{ url_for('company.detail',company_id=company.id) }}">
             <img width="95" height="95" class="media-object" alt="公司logo" src="{{ company.logo }}"/>
             <h3 class="company-name">{{ company.name }}</h3>
-            <p class="company-description">{{ company.description }}</p>
+            <p class="company-description" style="color: #555555;">{{ company.description }}</p>
           </a>
-          <a href="#">
+          <a href="{{ url_for('company.detail',company_id=company.id) }}">
               <p class="company-zhaopin">在招职位({{ number }})</p>
+              <p class="company-type" style="color: #555555;">{{ company.type }}/{{ company.finance }}/{{company.staff_num }}</p>
       </div>
     </div>
     {% endfor %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_form %}
+
+{% block title %}Analysis{% endblock %}
+
+{% block body %}
+  <form method="POST" action="{{ url_for('front.more') }}" style="text-align: center;">
+     {{ form.csrf_token }}
+     <span>{{ form.city.label }}</span>
+     <span>{{ form.city }}</span>
+     <span>{{ form.job.label }}</span>
+     <span>{{ form.job }}</span>
+     <span>{{ form.submit(class="btn btn-primary") }}</span>
+  </form>
+
+  <center><img src="../static/more.png" width="600px" height="400px"/></center>
+{% endblock %}
+
+{% block big %}{% endblock %}

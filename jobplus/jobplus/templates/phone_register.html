@@ -2,9 +2,9 @@
 {% from "macros.html" import render_form %}
 {% block title %}PhoneRegister{% endblock %}
 {% block body %}
-<div class='form-phone' method='POST' action="{{ url_for('front.phone_register') }}">
-    </ul>
-    <div>{{ render_form(form,url_for('front.phone_register')) }}
-    </div>
+<div class='form'>
+  <h2>注册</h2>
+  {{ render_form(form, url_for('front.phone_register')) }}
 </div>
+
 {% endblock %}

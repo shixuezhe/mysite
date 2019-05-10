@@ -36,10 +36,9 @@
        </div>
        {% endfor %}
       </div>
-      <p class="list-more">
-        <a class="btn btn-success btn-lg list-more-btn" href="/job/">更多职位</a>
+      <p class="list-more" style="text-align: center">
+         <a class="btn btn-success btn-lg list-more-btn" style="color: white;" href="/job/">更多职位</a>
       </p>
-
       <ul class="nav nav-tabs list-title">
         <li class="active" role="presentation">
           <a href="/company/">最新公司</a>
@@ -52,17 +51,18 @@
              <a href="{{ url_for('company.detail',company_id=company.id) }}">
              <img width="80" height="80" class="media-object" alt="公司logo" src="{{ company.logo }}"/>
              <h3 class="company-name">{{ company.name }}</h3>
-             <p class="company-description">{{ company.description }}</p>
+             <p class="company-description" style="color: #555555;">{{ company.description }}</p>
            </a>
-           <a href="#">
+           <a href="{{ url_for('company.detail',company_id=company.id) }}">
              <p class="company-zhaopin">在招职位( {{ number }} )</p>
+             <p class="company-type" style="color: #555555;user-select: none;">{{ company.type }}/{{ company.finance }}/{{company.staff_num }}</p>
            </a>
          </div>
        </div>
        {% endfor %}
       </div>
-      <p class="list-more">
-         <a class="btn btn-success btn-lg list-more-btn" href="/company/">更多企业</a>
+      </div>
+      <p class="list-more" style="text-align: center">
+         <a class="btn btn-success btn-lg list-more-btn" style="color: white;" href="/company/">更多企业</a>
       </p>
-</div>
 {% endblock %}

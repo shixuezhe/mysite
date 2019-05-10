@@ -1,5 +1,6 @@
 import scrapy
 
+
 class JobSpider(scrapy.Spider):
     name = 'jobs'
  
@@ -15,21 +16,21 @@ class JobSpider(scrapy.Spider):
         'X-Anit-Forge-Token': 'None',
         'X-Requested-With': 'XMLHttpRequest'
     }
+
     def start_requests(self):
-        url_tmp = ['https://www.lagou.com/zhaopin/{}/'.format(i) for i in range(1,21)]
+        url_tmp = ['https://www.lagou.com/zhaopin/{}/'.format(i) for i in range(1, 31)]
         for url in url_tmp:
-            yield scrapy.Request(url=url,callback=self.parse,headers=self.headers)
+            yield scrapy.Request(url=url, callback=self.parse, headers=self.headers)
 
     def parse(self, response):
         for job in response.css('li.con_list_item'):
             yield {
-                'name':job.xpath('.//div[@class="p_top"]/a/h3/text()').extract_first(),
-                'location':job.xpath('.//span[@class="add"]/em/text()').extract_first(),
-                'experience':job.xpath('.//div[@class="p_bot"]/div/text()').re(r'\s*(.+)\s*/\s*(.+)\s*')[0],
-                'degree':job.xpath('.//div[@class="p_bot"]/div/text()').re(r'\s*(.+)\s*/\s*(.+)\s*')[1],
-                'wage_low':job.xpath('.//span[@class="money"]/text()').re(r'(.+)-(.+)')[0],
-                'wage_high': job.xpath('.//span[@class="money"]/text()').re(r'(.+)-(.+)')[1],
-                'tags':job.xpath('.//div[@class="list_item_bot"]/div/span/text()').extract()
+                'name': job.xpath('.//div[@class="p_top"]/a/h3/text()').extract_first(),
+                'location': job.xpath('.//span[@class="add"]/em/text()').extract_first(),
+                'experience': job.xpath('.//div[@class="p_bot"]/div/text()').re(r'\s*(.+)\s*/\s*(.+)\s*')[0],
+                'degree': job.xpath('.//div[@class="p_bot"]/div/text()').re(r'\s*(.+)\s*/\s*(.+)\s*')[1],
+                'wage_low': job.xpath('.//span[@class="money"]/text()').re(r'(.+)k-(.+)k')[0],
+                'wage_high': job.xpath('.//span[@class="money"]/text()').re(r'(.+)k-(.+)k')[1],
+                'tags': job.xpath('.//div[@class="list_item_bot"]/div/span/text()').extract()
                 }
-
 

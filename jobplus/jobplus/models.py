@@ -1,38 +1,38 @@
-from flask import url_for,Flask
+from flask import url_for, Flask
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config.update(dict(
     SCRECT_KEY='',
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost/liyang?charset=utf8',
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI='mysql+mysqldb://root:123456@localhost/liyang?charset=utf8',
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
 ))
-
 db = SQLAlchemy(app)
+
 
 class Base(db.Model):
     __abstract__ = True
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime,default=datetime.utcnow,onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class User(Base,UserMixin):
-    __tablename__ = 'user'
+
+class User(Base, UserMixin):
     ROLE_USER = 10
     ROLE_COMPANY = 20
     ROLE_ADMIN = 30
-    id = db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(32),unique=True,index=True,nullable=False)
-    email = db.Column(db.String(64),unique=True,index=True,nullable=False)
-    _password = db.Column('password',db.String(256),nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(32), unique=True, index=True, nullable=False)
+    email = db.Column(db.String(64), unique=True, index=True, nullable=False)
+    _password = db.Column('password', db.String(256), nullable=False)
     phone_number = db.Column(db.String(64))
     resume = db.Column(db.String(128))
     experience = db.Column(db.String(24))
-    role = db.Column(db.SmallInteger,default=ROLE_USER)
+    role = db.Column(db.SmallInteger, default=ROLE_USER)
     jobs = db.relationship('Job', backref='user')
-    detail = db.relationship('Company',uselist=False)
+    detail = db.relationship('Company', uselist=False)
 
     def __repr__(self):
         return '<User:{}>'.format(self.username)
@@ -45,7 +45,7 @@ class User(Base,UserMixin):
     def password(self,orig_password):
         self._password = generate_password_hash(orig_password)
 
-    def check_password(self,password):
+    def check_password(self, password):
         return check_password_hash(self._password, password)
 
     @property
@@ -62,11 +62,11 @@ class User(Base,UserMixin):
     
 
 class Company(Base):
-    id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(128),unique=True,index=True,nullable=False)
-    email = db.Column(db.String(64),nullable=False)
-    number = db.Column(db.String(48),nullable=False)
-    slug = db.Column(db.String(64),unique=True,index=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True, index=True, nullable=False)
+    email = db.Column(db.String(64), nullable=False)
+    number = db.Column(db.String(48), nullable=False)
+    slug = db.Column(db.String(64), unique=True, index=True)
     address = db.Column(db.String(128))
     site = db.Column(db.String(64))
     logo = db.Column(db.String(128))
@@ -74,45 +74,47 @@ class Company(Base):
     details = db.Column(db.Text())
     finance = db.Column(db.String(32))
     type = db.Column(db.String(32))
-    staff_num =db.Column(db.String(32))
+    staff_num = db.Column(db.String(32))
     location = db.Column(db.String(32))
-    users_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'))
-    users = db.relationship('User',uselist=False,backref=db.backref('companies',uselist=False))
+    users_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    users = db.relationship('User', uselist=False, backref=db.backref('companies', uselist=False))
 
     def __repr__(self):
         return '<Company {}>'.format(self.name)
     @property
     def url(self):
-        return url_for('company.detail',company_id=self.id)
-    
+        return url_for('company.detail', company_id=self.id)
+
+
 class Job(Base):
     id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(64),nullable=False)
-    wage_low = db.Column(db.String(24),nullable=False)
-    wage_high = db.Column(db.String(24),nullable=False)
-    location = db.Column(db.String(32),nullable=False)
+    name = db.Column(db.String(64), nullable=False)
+    wage_low = db.Column(db.Integer, nullable=False)
+    wage_high = db.Column(db.Integer, nullable=False)
+    location = db.Column(db.String(32), nullable=False)
     tags = db.Column(db.String(64))
     experience = db.Column(db.String(64))
     degree = db.Column(db.String(64))
-    is_fulltime = db.Column(db.Boolean,default=True)
-    is_open = db.Column(db.Boolean,default=True)
+    is_fulltime = db.Column(db.Boolean, default=True)
+    is_open = db.Column(db.Boolean, default=True)
     description = db.Column(db.Text())
-    company_id = db.Column(db.Integer,db.ForeignKey('company.id',ondelete='CASCADE'))
-    companies = db.relationship('Company',uselist=False,backref=db.backref('jobs'))
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'))
-    view_count = db.Column(db.Integer,default=0)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
+    companies = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    view_count = db.Column(db.Integer, default=0)
     
     def __repr__(self):
         return '<Job:{}>'.format(self.name)
 
     @property
     def url(self):
-        return url_for('job.detail',job_id=self.id)
+        return url_for('job.detail', job_id=self.id)
+
 
 class Resume(Base):
     __tablename__ = 'resume'
-    id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),primary_key=True)
-    name = db.Column(db.String(32),nullable=False)
+    id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+    name = db.Column(db.String(32), nullable=False)
     age = db.Column(db.SmallInteger)
     work_age = db.Column(db.SmallInteger)
     home_city = db.Column(db.String(64))
@@ -121,18 +123,20 @@ class Resume(Base):
     project_experience = db.Column(db.Text)
     resume_url = db.Column(db.String(128))
 
+
 class Delivery(Base):
     STATUS_WAITING = 1
     STATUS_ACCEPT = 2
     STATUS_REJECT = 3
 
-    id = db.Column(db.Integer,primary_key=True)
-    job_id = db.Column(db.Integer,db.ForeignKey('job.id',ondelete='CASCADE'))
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'))
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     job = db.relationship('Job', uselist=False, backref=db.backref('job_resume', uselist=False))
     user = db.relationship('User', uselist=False, backref=db.backref('user_resume', uselist=False))
     company_id = db.Column(db.Integer)
-    status = db.Column(db.SmallInteger,default=STATUS_WAITING)
+    status = db.Column(db.SmallInteger, default=STATUS_WAITING)
+
 
 if __name__ == '__main__':
     db.create_all()

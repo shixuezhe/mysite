@@ -1,17 +1,21 @@
-import os,json,random
+import os
+import json
+import random
 from faker import Faker
-from jobplus.models import db,User,Company,Job
+from jobplus.jobplus.models import *
 
 fake = Faker('zh_CN')
 data_company = []
 company_name = []
 
-with open(os.path.join(os.path.dirname(__file__),'..','datas','company.json')) as f:
+
+with open(os.path.join(os.path.dirname(__file__), '..', 'datas', 'company.json')) as f:
     companies = json.load(f)
     for i in companies:
         if i not in data_company:
             data_company.append(i)
             company_name.append(i['name'])
+
 
 def iter_users():
     for company in data_company:
@@ -21,6 +25,7 @@ def iter_users():
             password='123456',
             role=20
         )
+
 
 def iter_companys():
     for com in data_company:
@@ -38,12 +43,13 @@ def iter_companys():
             description=com['description']
         )
 
+
 def iter_jobs():
     id_list = []
     companies = Company.query.all() 
     for i in companies:
         id_list.append(i.id)
-    with open(os.path.join(os.path.dirname(__file__),'..','datas','job.json')) as f:
+    with open(os.path.join(os.path.dirname(__file__), '..', 'datas', 'jobs.json')) as f:
         for job in json.load(f):
             yield Job(
                 company_id=random.choice(id_list),
@@ -69,6 +75,7 @@ def run():
     except Exception as e:
         print(e)
         db.session.rollback()
+
 
 if __name__ == '__main__':
     run()
