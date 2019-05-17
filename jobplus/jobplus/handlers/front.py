@@ -69,42 +69,22 @@ def analysis():
     all_analysis()
     form = AnalysisForm()
     if form.validate_on_submit():
-        if form.city.data and not form.job.data:
-            city_analysis(form.city.data)
-            return redirect(url_for('front.city'))
-        elif form.city.data and form.job.data:
+        if form.job.data:
             more_analysis(form.city.data, form.job.data)
+            flash('请刷新页面', 'success')
             return redirect(url_for('front.more'))
         else:
-            flash('请输入城市、职位')
+            city_analysis(form.city.data)
+            flash('请刷新页面', 'success')
+            return redirect(url_for('front.city'))
     return render_template('analysis.html', form=form)
 
 
-@front.route('/analysis/city', methods=['POST', 'GET'])
+@front.route('/analysis/city', methods=['GET'])
 def city():
-    form = AnalysisForm()
-    if form.validate_on_submit():
-        if form.city.data and not form.job.data:
-            city_analysis(form.city.data)
-            return redirect(url_for('front.city'))
-        elif form.city.data and form.job.data:
-            more_analysis(form.city.data, form.job.data)
-            return redirect(url_for('front.more'))
-        else:
-            flash('请输入城市、职位')
-    return render_template('city_analysis.html', form=form)
+    return render_template('city_analysis.html')
 
 
-@front.route('/analysis/more', methods=['POST', 'GET'])
+@front.route('/analysis/more', methods=['GET'])
 def more():
-    form = AnalysisForm()
-    if form.validate_on_submit():
-        if form.city.data and not form.job.data:
-            city_analysis(form.city.data)
-            return redirect(url_for('front.city'))
-        elif form.city.data and form.job.data:
-            more_analysis(form.city.data, form.job.data)
-            return redirect(url_for('front.more'))
-        else:
-            flash('请输入城市、职位')
-    return render_template('more_analysis.html', form=form)
+    return render_template('more_analysis.html')

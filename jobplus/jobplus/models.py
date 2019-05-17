@@ -42,7 +42,7 @@ class User(Base, UserMixin):
         return self._password
     
     @password.setter
-    def password(self,orig_password):
+    def password(self, orig_password):
         self._password = generate_password_hash(orig_password)
 
     def check_password(self, password):

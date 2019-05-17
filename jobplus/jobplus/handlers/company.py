@@ -26,7 +26,7 @@ def detail(company_id):
     company = Company.query.get_or_404(company_id)
     job = Job.query.filter_by(company_id=company_id).all()
     number = len(job)
-    return render_template('company/detail.html', company=company, number=number)
+    return render_template('company/detail.html', active='company_detail', company=company, number=number)
 
 
 @company.route('/<int:company_id>/online_jobs')
@@ -68,7 +68,7 @@ def job_edit(company_id):
     form = JobForm(obj=job)
     if form.validate_on_submit():
         form.update_job(job)
-        flash('职位更新成功','success')
+        flash('职位更新成功', 'success')
         return redirect(url_for('company.manage_job', company_id=company_id))
     return render_template('company/job_edit.html', form=form, company_id=company_id)
 
@@ -128,7 +128,7 @@ def manage_reject(company_id):
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False
     )
-    return render_template('company/manage_delivery.html',pagination=pagination, company_id=company_id)
+    return render_template('company/manage_delivery.html', pagination=pagination, company_id=company_id)
 
 
 @company.route('/<int:company_id>/manage/delivery/<int:delivery_id>/accept')
@@ -138,7 +138,7 @@ def delivery_accept(company_id, delivery_id):
     delivery.status = Delivery.STATUS_ACCEPT
     db.session.add(delivery)
     db.session.commit()
-    flash('已安排面试,可在待面试中查看','success')
+    flash('已安排面试,可在待面试中查看',  'success')
     return redirect(url_for('company.manage_delivery', company_id=company_id))
 
 

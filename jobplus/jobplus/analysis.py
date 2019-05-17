@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from flask import flash
 from jobplus.models import *
 from collections import Counter
 from pandas import DataFrame
@@ -19,6 +20,8 @@ cursor = conn.cursor()
 
 
 def all_analysis():
+    if os.path.exists('./jobplus/static/all.png'):
+        os.remove('./jobplus/static/all.png')
     job = Job.query.all()
     job_list = []
     for i in job:
@@ -27,18 +30,18 @@ def all_analysis():
     data = DataFrame(con)
     x = data[0]
     y = data[1]*10
-    plt.xlabel('热点城市')
-    plt.ylabel('在招职位数量')
-    plt.title('热点城市职位统计')
+    plt.xlabel(u'热点城市')
+    plt.ylabel(u'在招职位数量')
+    plt.title(u'热点城市职位统计')
     plt.bar(x, y)
     for a, b in zip(x, y):
         plt.text(a, b, '%.0f' % b, ha='center', va='bottom', fontsize=12, color='red')
-    if os.path.exists('./static/all.png'):
-        os.remove('./static/all.png')
-    plt.savefig('./static/all.png')
+    plt.savefig('./jobplus/static/all.png', dpi=300, bbox_inches='tight')
 
 
 def city_analysis(city):
+    if os.path.exists('./jobplus/static/city.png'):
+        os.remove('./jobplus/static/city.png')
     search = '%' + city + '%'
     sql = "SELECT LOCATION,ID FROM JOB WHERE LOCATION LIKE '%s'" % search
     cursor.execute(sql)
@@ -47,16 +50,19 @@ def city_analysis(city):
     for row in rr:
         location_list.append(row)
     orign_data = DataFrame(location_list)
-    data = orign_data.groupby(0).sum()[:10]
-    plt.pie(data, labels=data.index, autopct='%3.1f %%')
-    plt.title(u'区域招聘热度', fontsize=12, color='red')
-
-    if os.path.exists('./jobplus/static/city.png'):
-        os.remove('./jobplus/static/city.png')
-    plt.savefig('./jobplus/static/city.png')
+    data1 = orign_data.groupby(0).sum()[:10]
+    labels = [i for i in data1.index]
+    fig = plt.figure(0)
+    ax = fig.add_subplot(1, 1, 1)
+    ax.set_title(u'区域招聘热度', fontsize=14, color='red')
+    plt.pie(data1[1], labels=labels, autopct='%3.1f%%')
+    plt.legend(loc='upper right', bbox_to_anchor=(0, 1))
+    plt.savefig('./jobplus/static/city.png', dpi=300, bbox_inches='tight')
 
 
 def more_analysis(city, job):
+    if os.path.exists('./jobplus/static/more.png'):
+        os.remove('./jobplus/static/more.png')
     search_city = '%' + city + '%'
     search_job = '%' + job + '%'
     sql = "SELECT NAME,WAGE_HIGH FROM (SELECT * FROM JOB WHERE LOCATION LIKE '%s') a WHERE NAME LIKE '%s'" % (search_city, search_job)
@@ -69,14 +75,13 @@ def more_analysis(city, job):
     data = data.groupby(0).max().sort_values(by=1)
     x = data.index
     y = data[1]
-    plt.bar(x, y)
+    fig = plt.figure(0)
+    ax = fig.add_subplot(1, 1, 1)
+    ax.axes.set_xticklabels(x, rotation=40, fontsize=8)
+    ax.set_title('薪资排行榜', color='red')
+    ax.set_ylabel('薪资/k')
+    plt.bar(x, y, width=0.5)
     for a, b in zip(x, y):
         plt.text(a, b, '%sk' % b, ha='center', va='bottom', fontsize=15, color='red')
+    plt.savefig('./jobplus/static/more.png', dpi=300, bbox_inches='tight')
 
-    if os.path.exists('./jobplus/static/more.png'):
-        os.remove('./jobplus/static/more.png')
-    plt.savefig('./jobplus/static/more.png')
-
-
-if __name__ == '__main__':
-    more_analysis('成都', '经理')
