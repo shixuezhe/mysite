@@ -2,7 +2,7 @@ from flask import Blueprint, url_for, render_template, flash, redirect
 from jobplus.models import User, Company, Job, Resume
 from jobplus.forms import LoginForm, Phone_RegisterForm, AnalysisForm
 from flask_login import login_user, logout_user, login_required
-from jobplus.analysis import city_analysis, more_analysis, all_analysis
+from jobplus.analysis import city_analysis, all_analysis
 
 
 front = Blueprint('front', __name__)
@@ -69,22 +69,11 @@ def analysis():
     all_analysis()
     form = AnalysisForm()
     if form.validate_on_submit():
-        if form.job.data:
-            more_analysis(form.city.data, form.job.data)
-            flash('请刷新页面', 'success')
-            return redirect(url_for('front.more'))
-        else:
-            city_analysis(form.city.data)
-            flash('请刷新页面', 'success')
-            return redirect(url_for('front.city'))
+        city_analysis(form.city.data)
+        return redirect(url_for('front.city'))
     return render_template('analysis.html', form=form)
 
 
 @front.route('/analysis/city', methods=['GET'])
 def city():
     return render_template('city_analysis.html')
-
-
-@front.route('/analysis/more', methods=['GET'])
-def more():
-    return render_template('more_analysis.html')

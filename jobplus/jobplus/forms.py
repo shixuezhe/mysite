@@ -209,5 +209,5 @@ class ResumeForm(FlaskForm):
 
 class AnalysisForm(FlaskForm):
     city = StringField('城市', validators=[data_required()])
-    job = StringField('职位')
+    position = StringField('职位')
     submit = SubmitField('查询')

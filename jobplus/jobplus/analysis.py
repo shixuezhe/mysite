@@ -3,6 +3,7 @@ from flask import flash
 from jobplus.models import *
 from collections import Counter
 from pandas import DataFrame
+import pandas as pd
 import os
 from pylab import *
 import pymysql
@@ -29,59 +30,53 @@ def all_analysis():
     con = Counter(job_list).most_common(10)
     data = DataFrame(con)
     x = data[0]
-    y = data[1]*10
+    y = data[1] * 10
     plt.xlabel(u'热点城市')
     plt.ylabel(u'在招职位数量')
     plt.title(u'热点城市职位统计')
     plt.bar(x, y)
     for a, b in zip(x, y):
-        plt.text(a, b, '%.0f' % b, ha='center', va='bottom', fontsize=12, color='red')
-    plt.savefig('./jobplus/static/all.png', dpi=300, bbox_inches='tight')
+        plt.text(a, b, '%.0f' % b, ha='center', va='bottom', fontsize=7, color='red')
+    plt.savefig('./jobplus/static/all.png')
 
 
 def city_analysis(city):
     if os.path.exists('./jobplus/static/city.png'):
         os.remove('./jobplus/static/city.png')
-    search = '%' + city + '%'
-    sql = "SELECT LOCATION,ID FROM JOB WHERE LOCATION LIKE '%s'" % search
+    search = city + '%'
+    sql = "SELECT NAME,WAGE_HIGH,LOCATION FROM JOB WHERE LOCATION LIKE '%s' ORDER BY WAGE_HIGH DESC " % search
     cursor.execute(sql)
     rr = cursor.fetchall()
-    location_list = []
+    #处理数据
+    job_list = []
     for row in rr:
-        location_list.append(row)
-    orign_data = DataFrame(location_list)
-    data1 = orign_data.groupby(0).sum()[:10]
-    labels = [i for i in data1.index]
-    fig = plt.figure(0)
-    ax = fig.add_subplot(1, 1, 1)
-    ax.set_title(u'区域招聘热度', fontsize=14, color='red')
-    plt.pie(data1[1], labels=labels, autopct='%3.1f%%')
-    plt.legend(loc='upper right', bbox_to_anchor=(0, 1))
-    plt.savefig('./jobplus/static/city.png', dpi=300, bbox_inches='tight')
+        job_list.append(row)
+    orign_data = DataFrame(job_list, columns=['name', 'wage_high', 'location'])
+    data_location = orign_data['location']
+    data_location_count = data_location.apply(pd.value_counts).max()
+    data_job_salary = orign_data[['name', 'wage_high']][:10]
+    #招聘热度绘图
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 2, 1)
+    ax1.set_title(u'区域招聘前五', fontsize=12, color='red')
+    plt.pie(data_location_count.values[:5], labels=data_location_count.index[:5], autopct='%3.1f%%')
+    plt.legend(loc='upper right', bbox_to_anchor=(1, -0.2))
 
+    #薪资排行绘图
+    ax2 = fig.add_subplot(1, 2, 2)
+    ax2.set_title(u'薪资排行前十', fontsize=12, color='red')
+    x_list = list(data_job_salary.name)
+    x = []
+    for i in x_list:
+        x.append(i.split('（')[0])
+    ax2.set_yticks(data_job_salary.wage_high)
+    ax2.set_xticklabels(x, rotation=70, fontsize=7)
+    ax2.set_ylabel('薪资/k')
+    plt.bar(x, data_job_salary.wage_high)
+    for a, b in zip(x, data_job_salary.wage_high):
+        plt.text(a, b, '%sk' % b, ha='center', va='bottom', fontsize=12, color='red')
+    fig.tight_layout()
+    #plt.show()
+    plt.savefig('./jobplus/static/city.png')
 
-def more_analysis(city, job):
-    if os.path.exists('./jobplus/static/more.png'):
-        os.remove('./jobplus/static/more.png')
-    search_city = '%' + city + '%'
-    search_job = '%' + job + '%'
-    sql = "SELECT NAME,WAGE_HIGH FROM (SELECT * FROM JOB WHERE LOCATION LIKE '%s') a WHERE NAME LIKE '%s'" % (search_city, search_job)
-    cursor.execute(sql)
-    rr = cursor.fetchall()
-    more_list = []
-    for row in rr:
-        more_list.append(row)
-    data = DataFrame(more_list)
-    data = data.groupby(0).max().sort_values(by=1)
-    x = data.index
-    y = data[1]
-    fig = plt.figure(0)
-    ax = fig.add_subplot(1, 1, 1)
-    ax.axes.set_xticklabels(x, rotation=40, fontsize=8)
-    ax.set_title('薪资排行榜', color='red')
-    ax.set_ylabel('薪资/k')
-    plt.bar(x, y, width=0.5)
-    for a, b in zip(x, y):
-        plt.text(a, b, '%sk' % b, ha='center', va='bottom', fontsize=15, color='red')
-    plt.savefig('./jobplus/static/more.png', dpi=300, bbox_inches='tight')
 
