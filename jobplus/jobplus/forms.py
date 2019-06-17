@@ -211,3 +211,42 @@ class AnalysisForm(FlaskForm):
     city = StringField('城市', validators=[data_required()])
     position = StringField('职位')
     submit = SubmitField('查询')
+
+
+class AdminUserForm(FlaskForm):
+    username = StringField('用户名', validators=[data_required()])
+    email = StringField('邮箱', validators=[Email()])
+    phone_number = StringField('手机号', validators=[data_required()])
+    password = PasswordField('密码', validators=[data_required(), Length(6, 24)])
+    role = StringField('角色(普通用户填10，管理员填30)')
+    submit = SubmitField('提交')
+
+    def create_user(self):
+        user = User(username=self.username.data,
+                    email=self.email.data,
+                    phone_number=self.phone_number.data,
+                    password=self.password.data,
+                    role=self.role.data)
+        db.session.add(user)
+        db.session.commit()
+
+
+class AdminCompanyForm(FlaskForm):
+    name = StringField('用户名', validators=[data_required()])
+    email = StringField('邮箱', validators=[data_required(), Email()])
+    number = StringField('手机号', validators=[data_required()])
+    password = PasswordField('密码', validators=[data_required(), Length(6, 24)])
+    submit = SubmitField('提交')
+
+    def create_company(self):
+        user = User(username=self.name.data,
+                    email=self.email.data,
+                    password=self.password.data,
+                    role=20)
+        company = Company(name=self.name.data,
+                    email=self.email.data,
+                    number=self.number.data
+                          )
+        db.session.add(user)
+        db.session.add(company)
+        db.session.commit()

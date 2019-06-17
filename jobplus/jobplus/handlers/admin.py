@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, request, current_app, flash,url_for, redirect
 from jobplus.decorators import admin_required
 from jobplus.models import User, db, Company
-from jobplus.forms import CompanyEditForm, UserEditForm
+from jobplus.forms import CompanyEditForm, UserEditForm, AdminUserForm, AdminCompanyForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -33,7 +33,7 @@ def company_manage():
 @admin.route('/user/create',methods=['GET', 'POST'])
 @admin_required
 def create_user():
-    form = User_RegisterForm()
+    form = AdminUserForm()
     if form.is_submitted():
         form.create_user()
         flash('用户创建成功', 'success')
@@ -44,7 +44,7 @@ def create_user():
 @admin.route('/company/create', methods=['GET', 'POST'])
 @admin_required
 def create_company():
-    form=Company_RegisterForm()
+    form = AdminCompanyForm()
     if form.validate_on_submit():
         form.create_company()
         flash('企业创建成功', 'success')
@@ -67,11 +67,11 @@ def user_edit(user_id):
 @admin.route('/company/<company_id>/edit', methods=['GET', 'POST'])
 @admin_required
 def company_edit(company_id):
-    company=Company.query.get_or_404(company_id)
+    company = Company.query.get_or_404(company_id)
     form = CompanyEditForm(obj=company)
     if form.validate_on_submit():
         form.update_company(company)
-        flash('企业信息更新成功','success')
+        flash('企业信息更新成功', 'success')
         return redirect(url_for('admin.company_manage'))
     return render_template('admin/company_edit.html', form=form, company=company)
 
@@ -89,7 +89,7 @@ def user_delete(user_id):
 @admin.route('/company/<company_id>/delete',methods=['GET', 'POST'])
 @admin_required
 def company_delete(company_id):
-    company=Company.query.get_or_404(company_id)
+    company = Company.query.get_or_404(company_id)
     db.session.delete(company)
     db.session.commit()
     flash('企业删除成功', 'success')

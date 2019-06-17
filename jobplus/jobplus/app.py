@@ -4,6 +4,7 @@ from jobplus.models import db, User
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
+
 def register_extensions(app):
     db.init_app(app)
     login_manager = LoginManager()

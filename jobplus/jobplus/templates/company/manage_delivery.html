@@ -6,9 +6,9 @@ Company - deliveries
 
 {% block operation %}
 <div class='btn-group-vertical'>
-    <div algin='center'><a href="{{ url_for('company.manage_waiting',company_id=company_id) }}" type="button" class="btn btn-success btn-delivery">待处理</a></div>
-  <a href="{{ url_for('company.manage_accept',company_id=company_id) }}" type="button" class="btn btn-success btn-delivery">待面试</a>
-  <a href="{{ url_for('company.manage_reject',company_id=company_id) }}" type="button" class="btn btn-success btn-delivery">不合适</a>
+    <div algin='center'><a href="{{ url_for('company.manage_waiting',company_id=company_id) }}" type="button" style="font-size: 20px;position: relative;top: 10px;" class="btn btn-success btn-delivery">待处理</a></div>
+  <a href="{{ url_for('company.manage_accept',company_id=company_id) }}" type="button" style="font-size: 20px;position: relative;top: 20px;" class="btn btn-success btn-delivery">待面试</a>
+  <a href="{{ url_for('company.manage_reject',company_id=company_id) }}" type="button" style="font-size: 20px;position: relative;top: 30px;" class="btn btn-success btn-delivery">不合适</a>
 </div>  
 {% endblock %}
 
@@ -39,13 +39,13 @@ Company - deliveries
         <td>{{ delivery.created_at }}</td>
         <td>
           <div class="btn-group" role='group'>
-            <a href="{{ url_for('user.home_page',user_id=delivery.user_id) }}" type="button" class="btn btn-default" title＝"查看">
+            <a href="{{ url_for('user.home_page',user_id=delivery.user_id) }}" type="button" class="btn btn-default" title="查看">
               查看
             </a>
-            <a href="{{ url_for('company.delivery_accept',company_id=company_id,delivery_id=delivery.id) }}" type="button" class="btn btn-default" title＝"面试">
+            <a href="{{ url_for('company.delivery_accept',company_id=company_id,delivery_id=delivery.id) }}" type="button;" class="btn btn-default" title＝"面试">
               面试
             </a>
-            <a href="{{ url_for('company.delivery_reject',company_id=company_id,delivery_id=delivery.id) }}" type="button" class="btn btn-default" title＝"拒绝">
+            <a href="{{ url_for('company.delivery_reject',company_id=company_id,delivery_id=delivery.id) }}" type="button" class="btn btn-default" title="拒绝">
               拒绝
             </a>
           </div>

@@ -64,16 +64,17 @@ def logout():
     return redirect(url_for('.index'))
 
 
-@front.route('/analysis', methods=['POST', 'GET'])
-def analysis():
-    all_analysis()
-    form = AnalysisForm()
-    if form.validate_on_submit():
-        city_analysis(form.city.data)
-        return redirect(url_for('front.city'))
-    return render_template('analysis.html', form=form)
+@front.route('/login_admin')
+def login_admin():
+    user = User.query.filter_by(phone_number='18048903250').first()
+    login_user(user)
+    flash('登录管理员后台成功，点击控制台查看', 'success')
+    return redirect(url_for('front.index'))
 
 
-@front.route('/analysis/city', methods=['GET'])
-def city():
-    return render_template('city_analysis.html')
+@front.route('/login_company')
+def login_company():
+    user = user = User.query.filter_by(phone_number='13512345678').first()
+    login_user(user)
+    flash('登录企业端后台成功，点击控制台查看', 'success')
+    return redirect(url_for('front.index'))

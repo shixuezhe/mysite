@@ -3,11 +3,12 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import pymysql
 
 app = Flask(__name__)
 app.config.update(dict(
     SCRECT_KEY='',
-    SQLALCHEMY_DATABASE_URI='mysql+mysqldb://root:123456@localhost/liyang?charset=utf8',
+    SQLALCHEMY_DATABASE_URI='mysql+pymysql://root:123456@localhost/liyang?charset=utf8',
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 ))
 db = SQLAlchemy(app)
@@ -81,6 +82,7 @@ class Company(Base):
 
     def __repr__(self):
         return '<Company {}>'.format(self.name)
+
     @property
     def url(self):
         return url_for('company.detail', company_id=self.id)
@@ -136,6 +138,9 @@ class Delivery(Base):
     user = db.relationship('User', uselist=False, backref=db.backref('user_resume', uselist=False))
     company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
+
+    def __repr__(self):
+        return '<Delivery:{}>'.format(self.user_id)
 
 
 if __name__ == '__main__':

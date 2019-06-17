@@ -9,8 +9,8 @@ Manage
   <div class='col-md-3'>
       <h2>管理</h2>
     <div class='list-group'>
-      <a href='{{ url_for('company.manage_job',company_id=company_id) }}' class='list-group-item'>职位管理</a>
-      <a href='{{ url_for('company.manage_delivery',company_id=company_id) }}' class='list-group-item'>投递管理</a>
+      <a href='{{ url_for('company.manage_job',company_id=company_id) }}' class="list-group-item {% if active == 'job' %}active{% endif %}">职位管理</a>
+      <a href="{{ url_for('company.manage_delivery',company_id=company_id) }}" class="list-group-item {% if active == 'delivery'%}active{% endif %}">投递管理</a>
     </div>
     {% block operation %}{% endblock %}
   </div>

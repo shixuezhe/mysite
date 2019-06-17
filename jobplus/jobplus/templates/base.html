@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel='stylesheet' type="text/css" href="../static/my.css">
   </head>
-<body></body>
+<body>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -25,10 +25,24 @@
           <li class="{% if active == 'job' %}active{% endif %}"><a href="{{ url_for('job.index') }}">职位<span class="sr-only">(current)</span></a></li>
           <li class="{% if active == 'company' %}active{% endif %}"><a href="{{ url_for('company.index') }}">公司</a></li>
         {% if current_user.is_authenticated and current_user.is_company %}
-        <li class="{% if active == 'manage' %}active{% endif %}"><a href="{{ url_for('company.manage_job',company_id=current_user.id) }}">管理</a></li>
+        <li class="{% if active == 'manage' %}active{% endif %}"><a href="{{ url_for('company.manage_job',company_id=current_user.detail.id) }}">管理</a></li>
         {% elif current_user.is_authenticated and current_user.is_admin %}
         <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.user_manage') }}">控制台</a></li>
         {% endif %}
+        <li class="dropdown">
+				<a href="{{ url_for('job.analysis') }}" class="dropdown-toggle" data-toggle="dropdown">
+					拉勾网职位数据分析
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="{{ url_for('job.top10_city') }}">职位Top10城市</a></li>
+					<li><a href="{{ url_for('job.top10_salary') }}">薪资Top10城市</a></li>
+					<li><a href="{{ url_for('job.top10_tags') }}">热门职位标签</a></li>
+					<li><a href="{{ url_for('job.experience') }}">工作经验统计</a></li>
+					<li><a href="{{ url_for('job.degree') }}">学历要求统计</a></li>
+					<li><a href="{{ url_for('job.degree_salary') }}">学历薪资对比</a></li>
+				</ul>
+		</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           {% if not current_user.is_authenticated %}
@@ -53,10 +67,13 @@
 
 {% block big %}
 <div class="jumbotron">
-    <div class="site-right" style="float: right;margin-top: 30px;font-size: 30px;">
-        <<a class="btn btn-success btn-lg" style="margin-right: 100px;color: white;font-size: 40px;" href="{{ url_for('front.analysis') }}">职场风向标</a>
-
+    <div class="site-right" style="float: right;margin-top: 25px;font-size: 30px;">
+        <a class="btn btn-success btn-lg" style="margin-right: 200px;color: white;font-size: 30px;" href="{{ url_for('job.analysis') }}">职场风向标</a>
+        <a class="btn btn-success btn-lg" style="position: relative;left: -120px; top: 0px;color: white;font-size: 30px;" href="{{ url_for('front.login_admin') }}">管理员后台</a>
+        <a class="btn btn-success btn-lg" style="position: relative;left: -50px; top: 0px;color: white;font-size: 30px;" href="{{ url_for('front.login_company') }}">企业端后台</a>
+        <p style="color: red;">点击按钮可自动登录管理员账号和一个企业账号查看后台管理系统</p>
     </div>
+
     <div class="site-left" style="margin-left:150px">
         <p class="site_name">嘟嘟招聘</p>
         <p class="site_desc">互联网人的求职、招聘平台</p>

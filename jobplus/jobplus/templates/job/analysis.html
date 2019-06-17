@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">职位数Top10城市</p>
+        <p class="media-middle" style="color: #666666">按职位数量排位行十的城市</p>
+        <a href="{{ url_for('job.top10_city') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">薪资Top10城市</p>
+        <p class="media-middle" style="color: #666666">按平均薪资排行前十的城市</p>
+        <a href="{{ url_for('job.top10_salary') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">热门职位标签</p>
+        <p class="media-middle" style="color: #666666">发布职位中的热门标签</p>
+        <a href="{{ url_for('job.top10_tags') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">工作经验统计</p>
+        <p class="media-middle" style="color: #666666">职位需求工作经验范围占比</p>
+        <a href="{{ url_for('job.experience') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">学历要求统计</p>
+        <p class="media-middle" style="color: #666666">职业学历需求范围占比</p>
+        <a href="{{ url_for('job.degree') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4" style="position: relative;left: 60px;">
+      <div class="thumbnail" style="width: 300px;height: 170px;padding: 30px;background-color: aliceblue;">
+        <p class="media-middle" style="font-size: 22px;">学历对工资的影响</p>
+        <p class="media-middle" style="color: #666666">同等学历不同城市间对比</p>
+        <a href="{{ url_for('job.degree_salary') }}">
+          <button type="button" class="btn btn-primary" style="width: 90px; height: 40px;font-size: 20px;">详情</button>
+        </a>
+      </div>
+    </div>
+{% endblock %}

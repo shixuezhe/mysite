@@ -9,7 +9,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = 1
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:123456@localhost:3306/liyang?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost:3306/liyang?charset=utf8'
 
 
 class ProductionConfig(BaseConfig):

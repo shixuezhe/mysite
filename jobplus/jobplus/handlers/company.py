@@ -40,14 +40,13 @@ def online_job(company_id):
 @company.route('/<int:company_id>/manage/job')
 @company_required
 def manage_job(company_id):
-    company = Company.query.filter_by(users_id=company_id).first()
     page = request.args.get('page', default=1, type=int)
-    pagination = Job.query.filter_by(company_id=company.id).paginate(
+    pagination = Job.query.filter_by(company_id=company_id).paginate(
         page=page,
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False
     )
-    return render_template('company/manage_job.html', pagination=pagination, company_id=company_id)
+    return render_template('company/manage_job.html', pagination=pagination, company_id=company_id, active='job')
 
 
 @company.route('/<int:company_id>/manage/job/create', methods=['GET', 'POST'])
@@ -92,14 +91,14 @@ def manage_delivery(company_id):
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False
     )
-    return render_template('company/manage_delivery.html', pagination=pagination, company_id=company_id)
+    return render_template('company/manage_delivery.html', pagination=pagination, company_id=company_id, active='delivery')
 
 
 @company.route('/<int:company_id>/manage/delivery/waiting')
 @company_required
 def manage_waiting(company_id):
     page = request.args.get('page', default=1, type=int)
-    pagination = Delivery.query.filter_by(company_id=company_id,status=1).paginate(
+    pagination = Delivery.query.filter_by(company_id=company_id, status=1).paginate(
         page=page,
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False
@@ -119,11 +118,11 @@ def manage_accept(company_id):
     return render_template('company/manage_delivery.html', pagination=pagination, company_id=company_id)
 
 
-@company.route('/<int:company_id>/manage/delivery/accept')
+@company.route('/<int:company_id>/manage/delivery/reject')
 @company_required
 def manage_reject(company_id):
     page = request.args.get('page', default=1, type=int)
-    pagination = Delivery.query.filter(company_id=company_id, status=2).paginate(
+    pagination = Delivery.query.filter_by(company_id=company_id, status=3).paginate(
         page=page,
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False
